@@ -4,6 +4,10 @@ Testing for the machine learning algorithms
 
 # Our machine learning algorithms
 from svc import SVMLearning
+from NeighborLearning import NeighborLearning
+from RandomForestLearning import RandomForestLearning
+
+# Split up into difference samples
 from sklearn.cross_validation import train_test_split
 
 # Read from the testing file
@@ -21,5 +25,16 @@ y = [y['instrument'] for y in json_data]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
 # setup svm and test
+print "******TESTING SVM******"
 svm = SVMLearning(X_train, y_train)
 svm.testReports(X_test, y_test)
+
+# setup neighbor learning and test
+print "******TESTING NEIGHBOR LEARNING******"
+neighborL = NeighborLearning(X_train, y_train)
+neighborL.testReports(X_test, y_test)
+
+# setup random forest learning and test
+print "******TESTING FOREST LEARNING******"
+rLearning = RandomForestLearning(X_train, y_train)
+rLearning.testReports(X_test, y_test)

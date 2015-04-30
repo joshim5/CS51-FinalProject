@@ -30,7 +30,7 @@ class SVMLearning(SuperLearning):
 	Returns:
 		Newly created object
 	"""
-	def __init__(self, X_train, y_train, PCA_option = True):
+	def __init__(self, X_train, y_train, PCA_option = False):
 		# Call the super class's initilaizer
 		super(SVMLearning, self).__init__(X_train, y_train, PCA_option)	
 
