@@ -5,6 +5,9 @@ from superlearning import SuperLearning
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.decomposition import RandomizedPCA
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from sklearn import neighbors
 
 # Machine Learning
 
@@ -34,6 +37,10 @@ class NeighborLearning(SuperLearning):
 		# Here, you should setup self.clf, which should have methods
 		# predict, i.e. y_pred = self.clf.predict(X_test_pca)
 
+		for weights in ['uniform', 'distance']:
+	    # create an instance of Neighbours Classifier and fit the data.
+	    self.clf = neighbors.KNeighborsClassifier(n_neighbors=5, weights=weights)
+	    self.clf = self.clf.fit(X_train, y_train)
 
 	"""
    	TestReports
