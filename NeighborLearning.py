@@ -7,17 +7,11 @@ from sklearn.decomposition import PCA
 from sklearn.decomposition import RandomizedPCA
 
 # Machine Learning
-from sklearn.grid_search import GridSearchCV
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.decomposition import PCA
-from sklearn.svm import SVC
-from sklearn.decomposition import RandomizedPCA
 
-class SVMLearning(SuperLearning):
+class NeighborLearning(SuperLearning):
 	"""
 	Initializer
-	Sets up the SVM based on given training data.	
+	Sets up learning based on nearest learning using the given training data.	
 
 	Parameters:
 		X_train: array of arrays of floats
@@ -34,15 +28,12 @@ class SVMLearning(SuperLearning):
 		# Call the super class's initilaizer
 		super(SVMLearning, self).__init__(X_train, y_train, PCA_option)	
 
-		# Various parameters for use in grid search
-		# Our choices are adopted from the standard ones 
-		# given in scikit-learn documentation
-		param_grid = {'C': [1e3, 5e3, 1e4, 5e4, 1e5],
-   	          'gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.1], }	
+		# Parameters and setup
 
-   	    # Setup the classifier
-   		self.clf = GridSearchCV(SVC(kernel='rbf', class_weight='auto'), param_grid)
-   		self.clf = self.clf.fit(self.X_train_pca, self.y_train)	
+		# Setup the classifier
+		# Here, you should setup self.clf, which should have methods
+		# predict, i.e. y_pred = self.clf.predict(X_test_pca)
+
 
 	"""
    	TestReports
@@ -61,8 +52,9 @@ class SVMLearning(SuperLearning):
 	Returns:
 		Nothing
    	"""
-	def testReports(self, X_test, y_test, fileName = None):
-		X_test_pca = None
+
+   	def testReports(self, X_test, y_test, fileName = None):
+   		X_test_pca = None
    		# Prepare principal components of the test data
    		if self.PCA_option:
 			X_test_pca = self.pca.transform(X_test)
@@ -94,7 +86,7 @@ class SVMLearning(SuperLearning):
    			f.write(confusion)
    			f.close()	
 	"""
-   	Classify
+	Classify
    	Classify the instrument of a single sound vector	
    	Parameters:
    		test_vectors: array of array of floats
