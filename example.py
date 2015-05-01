@@ -16,7 +16,10 @@ instruments = ["oboe", "trumpet", "flute", "frenchhorn"]
 
 values = []
 
-path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/sounds/"
+currDir = os.path.dirname(os.path.realpath(__file__))
+
+
+path = currDir + "/sounds/"
 
 for x in instruments:
     currPath = path + x
