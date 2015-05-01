@@ -19,16 +19,14 @@ import json
 import pyaudio
 import wave
 
+
+#for our audio recording
 CHUNK = 1024
 FORMAT = pyaudio.paInt32
 CHANNELS = 2
 RATE = 44100
 RECORD_SECONDS = 2
 WAVE_OUTPUT_FILENAME = "output.wav"
-
-
-
-
 
 
 class Interface():
@@ -49,6 +47,8 @@ class Interface():
         self.test_svm()
         self.test_neighbor()
         self.test_forest()
+
+        #allow user to play a clip and then classify it
         self.classify_song()
 
 
@@ -72,7 +72,10 @@ class Interface():
         self.rLearning.testReports(self.X_test, self.y_test)
 
     def read_data(self, filename):
-        avg = [0]*13
+        '''
+        Takes a path to a file as input
+        Returns the mfcc for that file
+        '''
 
         (rate,sig) = wav.read(filename)
         mfcc_feat = mfcc(sig,rate)
@@ -82,17 +85,15 @@ class Interface():
         try: 
             mfcc_feat = mfcc_feat[300]
         except:
-            print "sample too short"
+            raise RuntimeError('sample too short')
 
         return mfcc_feat
 
-    
-
-    def classify_song(self):
+    def record(self):
         '''Audio recording code based very closely on the documentation'''
         '''https://people.csail.mit.edu/hubert/pyaudio/#docs'''
 
-        x = raw_input("Press enter to record: ")
+       
         stream = self.p.open(format=FORMAT,
         channels=CHANNELS,
         rate=RATE,
@@ -120,14 +121,30 @@ class Interface():
         wf.writeframes(b''.join(frames))
         wf.close()
 
+    
+
+    def classify_song(self):
+
+        x = raw_input("Press enter to record: ")
+
+        #record for two seconds and save to output.wav
+        self.record()
+        
+        #open the wav file and extract the mfccs
         ret = self.read_data("output.wav")
 
 
-
+        #classify with out trained svm
         answer_string = self.svm.classify([ret])
+
+        #classify with our nearest neighbors
         answer_string1 = self.neighborL.classify([ret], self.X_test)
+
+        #classify with random forests
         answer_string2 = self.rLearning.classify([ret])
 
+
+        #print results
         print "SVM:", answer_string[0]
         print "Neighbor:", answer_string1[0]
         print "Forest:", answer_string2[0]
