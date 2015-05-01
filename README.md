@@ -10,19 +10,28 @@ ipython notebook --port 9999
 
 In Safari, select "project.ipynb"
 
-## Saving code
+## Dependencies
+For the project to work, the following libraries must be installed: 
 
-When you're done working, make sure to commit your code.
+1. scipy - http://www.scipy.org/
+2. numpy - http://www.numpy.org/
+3. matplotlib - http://matplotlib.org/
+4. pyaudio - https://people.csail.mit.edu/hubert/pyaudio/
+5. scikit-learn - http://scikit-learn.org/stable/
 
-1. In iPython Notebook, click the save icon on the top left.
-2. In your terminal, type "git add project.ipynb"
-3. In your terminal, type "git commit -m [your message here]"
-4. In your termianl, type "git push"
-5. git will prompt you for your user and password.
+Note that (5) depends on (1), (2), and (3)
 
-## Closing iPython
+To run the feature extraction code, after installing the dependencies navigates to the project directory in terminal and type
 
-1. In your terminal, type "control+c"
-2. Type y
+python example.py
+
+
+To run the machine learning algorithms, run 
+
+python main.py
+
+The three machine learning algorithms will be run, and you will see their output. The program will then prompt you to record a two second clip, which it will attempt to classify. 
+
+
 
 That's it :)
