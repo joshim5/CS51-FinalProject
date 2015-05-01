@@ -28,21 +28,23 @@ for x in instruments:
     for filename in glob.glob(os.path.join(currPath, '*.wav')):
         avg = [0]*13
 
-        res = read(filename)
-
-        for row in res:
+        res = read(filename).tolist()
+        try: 
+            res = res[300]
+        except:
+            print "input not long enough"
+        values.append({"instrument":x, "value": res})
+        '''for row in res:
             for k,v in enumerate(row):
                 avg[k] += v
         for k,v in enumerate(avg):
             avg[k] = avg[k]/len(res)
             instrAvg[k] += avg[k]
-        values.append({"instrument":x, "value": avg})
+        values.append({"instrument":x, "value": avg})'''
     for k,v in enumerate(instrAvg):
         instrAvg[k] = instrAvg[k]/ len(glob.glob(os.path.join(currPath, '*.wav')))
     print x, instrAvg
 
-print values
-
-json.dump(values, open("text.json",'w'))
+json.dump(values, open("text1.json",'w'))
 
 

@@ -1,58 +1,131 @@
-# Import statements
-
-"""
-Setup variables, initialize machine learning library, setup audio collecting, setup event handlers
-"""
-def initialize ():
+from svc import SVMLearning
+from NeighborLearning import NeighborLearning
+from RandomForestLearning import RandomForestLearning
 
 
-"""
-Called when a button is clicked that denotes the starting of recording
-"""
-def startRecording ():
+from features import mfcc
+from features import logfbank
+import scipy.io.wavfile as wav
+import os
+import glob
+import json
 
-"""
-Setup a callback to endRecording that is called after a fixed amount (10 - 15 seconds) later
-"""
-def startRecording ():
+# Split up into difference samples
+from sklearn.cross_validation import train_test_split
 
-"""
-Called after a set amount of time (10 -15 seconds) has passed since the start of the recording
-Stop recording and call extract audio, passing in the audio that was recorded
-Do any cleanup associated with the recordings 
-"""
-def endRecording ():
+# Read from the testing file
+import json
 
-"""
-takes as an argument the classification of a sound not in the training set and outputs its classification to the screen
-"""
-def outputResult ():
+import pyaudio
+import wave
 
-
-"""Machine Learning Functions"""
-
-"""Takes as input the audio that was recorded
-Runs feature extraction on the audio using the Yaafe library
-Returns an associative array containing the features and their respective values"""
-def extractAudio ():
+CHUNK = 1024
+FORMAT = pyaudio.paInt32
+CHANNELS = 2
+RATE = 44100
+RECORD_SECONDS = 1
+WAVE_OUTPUT_FILENAME = "output.wav"
 
 
-"""
-Calls extract audio on each of the values in our training set
-Maintains an array consisting of all of the returned values
-"""
-def extractTrainingData ():
 
-"""
-Takes as input the results from calling extractTrainingData
-Using scikit-learn, trains a neural network using the extracted features
-Outputs the results so that they can be stored in a variable or saved for later use in additional instances of the program
-"""
-def trainNeuralNetwork ():
 
-"""
-Takes as input the features extracted from the sounds not in our training set
-Using the neural network that was previously trained, this functions runs the neural network with these features as input. 
-The neural network will then return a classification, which this function will return
-"""
-def recognizeSound ():
+
+
+class Interface():
+    def __init__(self):
+        # read data
+        with open("text1.json") as json_file:
+            json_data = json.load(json_file)
+
+        self.p = pyaudio.PyAudio()
+
+        # format data
+        self.X = [x['value'] for x in json_data]
+        self.y = [y['instrument'] for y in json_data]
+
+        # Divide into training and testing
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.25)
+
+    def test_svm(self):
+        # setup svm and test
+        print "******TESTING SVM******"
+        svm = SVMLearning(self.X_train, self.y_train, True)
+        svm.testReports(self.X_test, self.y_test)
+
+    def test_neighbor(self):
+        # setup neighbor learning and test
+        print "******TESTING NEIGHBOR LEARNING******"
+        neighborL = NeighborLearning(self.X_train, self.y_train)
+        neighborL.testReports(self.X_test, self.y_test)
+
+    def test_forest(self):
+        # setup random forest learning and test
+        print "******TESTING FOREST LEARNING******"
+        rLearning = RandomForestLearning(self.X_train, self.y_train, True)
+        rLearning.testReports(self.X_test, self.y_test)
+
+    def read_data(self, filename):
+        avg = [0]*13
+
+        (rate,sig) = wav.read(filename)
+        mfcc_feat = mfcc(sig,rate)
+
+        for row in mfcc_feat:
+            for k,v in enumerate(row):
+                avg[k] += v
+        for k,v in enumerate(avg):
+            avg[k] = avg[k]/len(mfcc_feat)
+
+        return avg
+    
+
+    def classify_song(self):
+        stream = self.p.open(format=FORMAT,
+        channels=CHANNELS,
+        rate=RATE,
+        input=True,
+        frames_per_buffer=CHUNK)
+
+        print("* recording")
+
+        frames = []
+
+        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+            data = stream.read(CHUNK)
+            frames.append(data)
+
+        print("* done recording")
+
+        stream.stop_stream()
+        stream.close()
+        self.p.terminate()
+
+        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(self.p.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+
+        ret = self.read_data("output.wav")
+
+
+        svm = SVMLearning(self.X_train, self.y_train, True)
+        neighborL = NeighborLearning(self.X_train, self.y_train, True)
+        rLearning = RandomForestLearning(self.X_train, self.y_train, True)
+
+
+
+        answer_string = svm.classify([ret])
+        answer_string1 = neighborL.classify([ret], self.X_test)
+        answer_string2 = rLearning.classify([ret])
+        print answer_string[0]
+        print answer_string1[0]
+        print answer_string2[0]
+
+
+inst = Interface()
+#inst.test_svm()
+#inst.test_neighbor()
+inst.test_forest()
+inst.classify_song()

@@ -101,11 +101,11 @@ class NeighborLearning(SuperLearning):
 		Array of strings encoding the result
 	"""	
 
-	def classify(self, test_vectors):
+	def classify(self, test_vectors,X_test):
 		# Prepare a principal component of the test_vectors
 		X_test_pca = None
 		if self.PCA_option:
-			X_test_pca = self.pca.transform(test_vector)
+			X_test_pca = self.pca.transform(test_vectors)
 
 		# Otherwise, put the original vectors into the pca variable
 		else:
