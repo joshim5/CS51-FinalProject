@@ -16,11 +16,11 @@ def read(filename):
     #change this later!!!
 
 
-instruments = ["Oboe", "Trumpet", "Flute", "FrenchHorn"]
+instruments = ["oboe", "trumpet", "flute", "frenchhorn"]
 
 values = []
 
-path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/sounds/"
+path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/sounds/new/"
 
 for x in instruments:
     currPath = path + x
