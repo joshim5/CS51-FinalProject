@@ -23,7 +23,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt32
 CHANNELS = 2
 RATE = 44100
-RECORD_SECONDS = 1
+RECORD_SECONDS = 2
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 
@@ -46,23 +46,27 @@ class Interface():
         # Divide into training and testing
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.25)
 
+        self.test_svm()
+        self.test_neighbor()
+        self.test_forest()
+
     def test_svm(self):
         # setup svm and test
         print "******TESTING SVM******"
-        svm = SVMLearning(self.X_train, self.y_train)
-        svm.testReports(self.X_test, self.y_test)
+        self.svm = SVMLearning(self.X_train, self.y_train, True)
+        self.svm.testReports(self.X_test, self.y_test)
 
     def test_neighbor(self):
         # setup neighbor learning and test
         print "******TESTING NEIGHBOR LEARNING******"
-        neighborL = NeighborLearning(self.X_train, self.y_train)
-        neighborL.testReports(self.X_test, self.y_test)
+        self.neighborL = NeighborLearning(self.X_train, self.y_train)
+        self.neighborL.testReports(self.X_test, self.y_test)
 
     def test_forest(self):
         # setup random forest learning and test
         print "******TESTING FOREST LEARNING******"
-        rLearning = RandomForestLearning(self.X_train, self.y_train)
-        rLearning.testReports(self.X_test, self.y_test)
+        self.rLearning = RandomForestLearning(self.X_train, self.y_train, True)
+        self.rLearning.testReports(self.X_test, self.y_test)
 
     def read_data(self, filename):
         avg = [0]*13
@@ -70,16 +74,19 @@ class Interface():
         (rate,sig) = wav.read(filename)
         mfcc_feat = mfcc(sig,rate)
 
-        for row in mfcc_feat:
-            for k,v in enumerate(row):
-                avg[k] += v
-        for k,v in enumerate(avg):
-            avg[k] = avg[k]/len(mfcc_feat)
 
-        return avg
+        mfcc_feat = mfcc_feat.tolist()
+        try: 
+            mfcc_feat = mfcc_feat[300]
+        except:
+            print "sample too short"
+
+        return mfcc_feat
+
     
 
     def classify_song(self):
+        x = raw_input("Press any key to record: ")
         stream = self.p.open(format=FORMAT,
         channels=CHANNELS,
         rate=RATE,
@@ -110,22 +117,14 @@ class Interface():
         ret = self.read_data("output.wav")
 
 
-        svm = SVMLearning(self.X_train, self.y_train, True)
-        neighborL = NeighborLearning(self.X_train, self.y_train, True)
-        rLearning = RandomForestLearning(self.X_train, self.y_train, True)
 
-
-
-        answer_string = svm.classify([ret])
-        answer_string1 = neighborL.classify([ret], self.X_test)
-        answer_string2 = rLearning.classify([ret])
-        print answer_string[0]
-        print answer_string1[0]
-        print answer_string2[0]
+        answer_string = self.svm.classify([ret])
+        answer_string1 = self.neighborL.classify([ret], self.X_test)
+        answer_string2 = self.rLearning.classify([ret])
+        print "SVM:", answer_string[0]
+        print "Neighbor:", answer_string1[0]
+        print "Forest:", answer_string2[0]
 
 
 inst = Interface()
-inst.test_svm()
-inst.test_neighbor()
-inst.test_forest()
 inst.classify_song()
