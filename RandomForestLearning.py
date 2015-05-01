@@ -36,6 +36,7 @@ class RandomForestLearning(SuperLearning):
 	In particular, it creates a
 		-  classification reports
 		-  confusion matrix	
+
 	Parameters:
 		X_train: array of arrays of floats
 			This is the data itself. An array of vectors enconding the sounds from the instruments.
@@ -44,6 +45,7 @@ class RandomForestLearning(SuperLearning):
 		fileName: optional string
 			Where the testReport should be saved.
 			If no file is given, the report will print to the screen.	
+
 	Returns:
 		Nothing
 	"""
@@ -82,9 +84,11 @@ class RandomForestLearning(SuperLearning):
 	"""
 	Classify
 	Classify the instrument of a single sound vector	
+
 	Parameters:
 		test_vectors: array of array of floats
 			This is an array of the sound vectors that will be classified	
+			
 	Returns:
 		Array of strings encoding the result
 	"""	

@@ -28,6 +28,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 print "******TESTING SVM******"
 svm = SVMLearning(X_train, y_train)
 svm.testReports(X_test, y_test)
+svm.
 
 # setup neighbor learning and test
 print "******TESTING NEIGHBOR LEARNING******"
