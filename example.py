@@ -16,7 +16,7 @@ instruments = ["oboe", "trumpet", "flute", "frenchhorn"]
 
 values = []
 
-path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/newsounds/"
+path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/sounds/"
 
 for x in instruments:
     currPath = path + x
@@ -25,10 +25,12 @@ for x in instruments:
         avg = [0]*13
 
         res = read(filename).tolist()
+      
         try: 
             res = res[300]
         except:
             print "input not long enough"
+
         values.append({"instrument":x, "value": res})
         '''for row in res:
             for k,v in enumerate(row):
@@ -37,6 +39,6 @@ for x in instruments:
             avg[k] = avg[k]/len(res)
             instrAvg[k] += avg[k]'''
 
-json.dump(values, open("text2.json",'w'))
+json.dump(values, open("data.json",'w'))
 
 

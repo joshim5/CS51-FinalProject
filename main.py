@@ -34,7 +34,7 @@ WAVE_OUTPUT_FILENAME = "output.wav"
 class Interface():
     def __init__(self):
         # read data
-        with open("text1.json") as json_file:
+        with open("data.json") as json_file:
             json_data = json.load(json_file)
 
         self.p = pyaudio.PyAudio()
@@ -49,6 +49,7 @@ class Interface():
         self.test_svm()
         self.test_neighbor()
         self.test_forest()
+        self.classify_song()
 
 
 
@@ -88,7 +89,10 @@ class Interface():
     
 
     def classify_song(self):
-        x = raw_input("Press any key to record: ")
+        '''Audio recording code based very closely on the documentation'''
+        '''https://people.csail.mit.edu/hubert/pyaudio/#docs'''
+
+        x = raw_input("Press enter to record: ")
         stream = self.p.open(format=FORMAT,
         channels=CHANNELS,
         rate=RATE,
@@ -123,10 +127,11 @@ class Interface():
         answer_string = self.svm.classify([ret])
         answer_string1 = self.neighborL.classify([ret], self.X_test)
         answer_string2 = self.rLearning.classify([ret])
+
         print "SVM:", answer_string[0]
         print "Neighbor:", answer_string1[0]
         print "Forest:", answer_string2[0]
 
 
 inst = Interface()
-inst.classify_song()
+
