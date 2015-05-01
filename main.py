@@ -49,7 +49,7 @@ class Interface():
     def test_svm(self):
         # setup svm and test
         print "******TESTING SVM******"
-        svm = SVMLearning(self.X_train, self.y_train, True)
+        svm = SVMLearning(self.X_train, self.y_train)
         svm.testReports(self.X_test, self.y_test)
 
     def test_neighbor(self):
@@ -61,7 +61,7 @@ class Interface():
     def test_forest(self):
         # setup random forest learning and test
         print "******TESTING FOREST LEARNING******"
-        rLearning = RandomForestLearning(self.X_train, self.y_train, True)
+        rLearning = RandomForestLearning(self.X_train, self.y_train)
         rLearning.testReports(self.X_test, self.y_test)
 
     def read_data(self, filename):
@@ -125,7 +125,7 @@ class Interface():
 
 
 inst = Interface()
-#inst.test_svm()
-#inst.test_neighbor()
+inst.test_svm()
+inst.test_neighbor()
 inst.test_forest()
 inst.classify_song()
