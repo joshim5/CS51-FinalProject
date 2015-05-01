@@ -50,6 +50,8 @@ class Interface():
         self.test_neighbor()
         self.test_forest()
 
+
+
     def test_svm(self):
         # setup svm and test
         print "******TESTING SVM******"

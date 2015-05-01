@@ -12,19 +12,15 @@ def read(filename):
     fbank_feat = logfbank(sig,rate)
     return mfcc_feat
 
-
-    #change this later!!!
-
-
 instruments = ["oboe", "trumpet", "flute", "frenchhorn"]
 
 values = []
 
-path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/sounds/new/"
+path = "/Users/erikgodard/Documents/Classes/Freshman-Spring/CS51/CS51-FinalProject/newsounds/"
 
 for x in instruments:
     currPath = path + x
-    instrAvg = [0]*13
+    print x
     for filename in glob.glob(os.path.join(currPath, '*.wav')):
         avg = [0]*13
 
@@ -39,12 +35,8 @@ for x in instruments:
                 avg[k] += v
         for k,v in enumerate(avg):
             avg[k] = avg[k]/len(res)
-            instrAvg[k] += avg[k]
-        values.append({"instrument":x, "value": avg})'''
-    for k,v in enumerate(instrAvg):
-        instrAvg[k] = instrAvg[k]/ len(glob.glob(os.path.join(currPath, '*.wav')))
-    print x, instrAvg
+            instrAvg[k] += avg[k]'''
 
-json.dump(values, open("text1.json",'w'))
+json.dump(values, open("text2.json",'w'))
 
 
