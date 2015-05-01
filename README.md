@@ -13,22 +13,22 @@ In Safari, select "project.ipynb"
 ## Dependencies
 For the project to work, the following libraries must be installed: 
 
-1. scipy - http://www.scipy.org/
-2. numpy - http://www.numpy.org/
-3. matplotlib - http://matplotlib.org/
-4. pyaudio - https://people.csail.mit.edu/hubert/pyaudio/
-5. scikit-learn - http://scikit-learn.org/stable/
+* scipy - http://www.scipy.org/
+* numpy - http://www.numpy.org/
+* matplotlib - http://matplotlib.org/
+* pyaudio - https://people.csail.mit.edu/hubert/pyaudio/
+* scikit-learn - http://scikit-learn.org/stable/
 
 Note that (5) depends on (1), (2), and (3)
 
 To run the feature extraction code, after installing the dependencies navigates to the project directory in terminal and type
 
-python example.py
+    python example.py
 
 
 To run the machine learning algorithms, run 
 
-python main.py
+    python main.py
 
 The three machine learning algorithms will be run, and you will see their output. The program will then prompt you to record a two second clip, which it will attempt to classify. 
 
