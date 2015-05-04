@@ -32,7 +32,7 @@ WAVE_OUTPUT_FILENAME = "output.wav"
 class Interface():
     def __init__(self):
         # read data
-        with open("text.json") as json_file:
+        with open("data.json") as json_file:
             json_data = json.load(json_file)
 
         self.p = pyaudio.PyAudio()
