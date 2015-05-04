@@ -18,6 +18,7 @@ For the project to work, the following libraries must be installed:
 * matplotlib - http://matplotlib.org/
 * pyaudio - https://people.csail.mit.edu/hubert/pyaudio/
 * scikit-learn - http://scikit-learn.org/stable/
+* SpeechRecognition - https://pypi.python.org/pypi/SpeechRecognition/
 
 Note that (5) depends on (1), (2), and (3)
 
