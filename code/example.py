@@ -52,6 +52,6 @@ for x in instruments:
         values.append({"instrument":x, "value": res})
 
 #dump the labelled data into a json file for later use
-json.dump(values, open("text.json",'w'))
+json.dump(values, open("data.json",'w'))
 
 
